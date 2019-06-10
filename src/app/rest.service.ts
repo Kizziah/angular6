@@ -19,10 +19,9 @@ export class RestService {
   constructor(private http: HttpClient) { }
 
   private extractData(res: Response) {
-  	let body = res;
+  	const body = res;
   	return body || { };
 	}
-
 
 	getProducts(): Observable<any> {
 	  return this.http.get(endpoint + 'products').pipe(
@@ -34,29 +33,30 @@ export class RestService {
 	    map(this.extractData));
 	}
 
-	addProduct (product): Observable<any> {
-	  console.log(product);
-	  return this.http.post<any>(endpoint + 'products', JSON.stringify(product), httpOptions).pipe(
-	    tap((product) => console.log(`added product w/ id=${product.id}`)),
+	createPost(post): Observable<any> {
+	  console.log(post);
+	  debugger
+	  return this.http.post<any>(endpoint + 'post', JSON.stringify(post), httpOptions).pipe(
+	    tap((post) => console.log(`added post w/ id=${post.id}`)),
 	    catchError(this.handleError<any>('addProduct'))
 	  );
 	}
 
-	updateProduct (id, product): Observable<any> {
+	updateProduct(id, product): Observable<any> {
 	  return this.http.put(endpoint + 'products/' + id, JSON.stringify(product), httpOptions).pipe(
 	    tap(_ => console.log(`updated product id=${id}`)),
 	    catchError(this.handleError<any>('updateProduct'))
 	  );
 	}
 
-	deleteProduct (id): Observable<any> {
+	deleteProduct(id): Observable<any> {
 	  return this.http.delete<any>(endpoint + 'products/' + id, httpOptions).pipe(
 	    tap(_ => console.log(`deleted product id=${id}`)),
 	    catchError(this.handleError<any>('deleteProduct'))
 	  );
 	}
 
-	private handleError<T> (operation = 'operation', result?: T) {
+	private handleError<T>(operation = 'operation', result?: T) {
 	  return (error: any): Observable<T> => {
 
 	    // TODO: send the error to remote logging infrastructure
